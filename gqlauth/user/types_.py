@@ -11,21 +11,7 @@ from gqlauth.settings import gqlauth_settings
 
 USER_MODEL = get_user_model()
 # UPDATE_MUTATION_FIELDS are here because they are most likely to be in the model.
-USER_FIELDS = {
-    StrawberryField(
-        python_name=USER_MODEL._meta.pk.name,  # type: ignore
-        default=None,
-        type_annotation=StrawberryAnnotation(auto),
-    ),
-    StrawberryField(
-        python_name=USER_MODEL.USERNAME_FIELD,
-        default=None,
-        type_annotation=StrawberryAnnotation(auto),
-    ),
-    StrawberryField(
-        python_name=USER_MODEL.EMAIL_FIELD, default=None, type_annotation=StrawberryAnnotation(auto)
-    ),
-}.union(gqlauth_settings.UPDATE_MUTATION_FIELDS)
+USER_FIELDS = gqlauth_settings.USER_FIELDS.union(gqlauth_settings.UPDATE_MUTATION_FIELDS)
 
 
 @strawberry_django.filters.filter(UserStatus)
