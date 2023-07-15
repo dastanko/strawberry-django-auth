@@ -15,9 +15,7 @@ from typing import (
     cast,
 )
 
-from django.contrib.auth import get_user_model
 from django.http.request import HttpRequest
-from strawberry import auto
 from strawberry.annotation import StrawberryAnnotation
 from strawberry.field import StrawberryField
 
@@ -92,8 +90,8 @@ def default_text_factory():
         [
             str(node)
             for node in [
-            SystemRandom().randint(0, 10) for _ in range(5, SystemRandom().randint(10, 20))
-        ]
+                SystemRandom().randint(0, 10) for _ in range(5, SystemRandom().randint(10, 20))
+            ]
         ]
     )
 
@@ -125,9 +123,6 @@ class DjangoSetting(Generic[T]):
         return DjangoSetting(setting="", value=value)
 
 
-pk_field = StrawberryField(
-    python_name="id", default=None, type_annotation=StrawberryAnnotation(int)
-)
 username_field = StrawberryField(
     python_name="username", default=None, type_annotation=StrawberryAnnotation(str)
 )
@@ -146,9 +141,6 @@ last_name_field = StrawberryField(
 )
 email_field = StrawberryField(
     python_name="email", default=None, type_annotation=StrawberryAnnotation(str)
-)
-phone_field = StrawberryField(
-    python_name="phone", default=None, type_annotation=StrawberryAnnotation(str)
 )
 
 
@@ -200,14 +192,6 @@ class GqlAuthSettings:
     CAPTCHA_SAVE_IMAGE: bool = False
     """If True, an png representation of the captcha will be saved under
     MEDIA_ROOT/captcha/<datetime>/<uuid>.png."""
-    USER_FIELDS: Set[StrawberryField] = field(
-        default_factory=lambda: {
-            pk_field,
-            username_field,
-            email_field,
-            phone_field,
-        }
-    )
     # optional fields on update account, can be list of fields
     UPDATE_MUTATION_FIELDS: Set[StrawberryField] = field(
         default_factory=lambda: {first_name_field, last_name_field}
